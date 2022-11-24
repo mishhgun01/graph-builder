@@ -1,4 +1,4 @@
-package algorythms
+package graph
 
 import (
 	"reflect"
@@ -7,14 +7,12 @@ import (
 
 func TestNewUGraph(t *testing.T) {
 	type args struct {
-		graph *WeighedUndirectedGraph
+		graph *WeighedUndirected
 	}
-	tests := []struct {
+	var tests []struct {
 		name string
 		args args
-		want *UndirectedGraph
-	}{
-		// TODO: Add test cases.
+		want *Undirected
 	}
 	for _, tt := range tests {
 		t.Run(tt.name, func(t *testing.T) {
@@ -27,14 +25,12 @@ func TestNewUGraph(t *testing.T) {
 
 func TestNewWGraph(t *testing.T) {
 	type args struct {
-		graph *UndirectedGraph
+		graph *Undirected
 	}
-	tests := []struct {
+	var tests []struct {
 		name string
 		args args
-		want *WeighedUndirectedGraph
-	}{
-		// TODO: Add test cases.
+		want *WeighedUndirected
 	}
 	for _, tt := range tests {
 		t.Run(tt.name, func(t *testing.T) {
