@@ -5,9 +5,9 @@ import (
 	"testing"
 )
 
-func TestNewUGraph(t *testing.T) {
+func TestConvWeightedToUnweighted(t *testing.T) {
 	type args struct {
-		graph *Weighed
+		graph *Weighted
 	}
 	var tests []struct {
 		name string
@@ -16,26 +16,26 @@ func TestNewUGraph(t *testing.T) {
 	}
 	for _, tt := range tests {
 		t.Run(tt.name, func(t *testing.T) {
-			if got := NewUGraph(tt.args.graph); !reflect.DeepEqual(got, tt.want) {
-				t.Errorf("NewUGraph() = %v, want %v", got, tt.want)
+			if got := ConvWeightedToUnweighted(tt.args.graph); !reflect.DeepEqual(got, tt.want) {
+				t.Errorf("ConvWeightedToUnweighted() = %v, want %v", got, tt.want)
 			}
 		})
 	}
 }
 
-func TestNewWGraph(t *testing.T) {
+func TestUnweightedToWeighted(t *testing.T) {
 	type args struct {
 		graph *Unweighted
 	}
 	var tests []struct {
 		name string
 		args args
-		want *Weighed
+		want *Weighted
 	}
 	for _, tt := range tests {
 		t.Run(tt.name, func(t *testing.T) {
-			if got := NewWGraph(tt.args.graph); !reflect.DeepEqual(got, tt.want) {
-				t.Errorf("NewWGraph() = %v, want %v", got, tt.want)
+			if got := ConvUnweightedToWeighted(tt.args.graph); !reflect.DeepEqual(got, tt.want) {
+				t.Errorf("ConvUnweightedToWeighted() = %v, want %v", got, tt.want)
 			}
 		})
 	}
