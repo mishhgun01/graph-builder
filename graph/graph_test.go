@@ -7,12 +7,12 @@ import (
 
 func TestNewUGraph(t *testing.T) {
 	type args struct {
-		graph *WeighedUndirected
+		graph *Weighed
 	}
 	var tests []struct {
 		name string
 		args args
-		want *Undirected
+		want *Unweighted
 	}
 	for _, tt := range tests {
 		t.Run(tt.name, func(t *testing.T) {
@@ -25,12 +25,12 @@ func TestNewUGraph(t *testing.T) {
 
 func TestNewWGraph(t *testing.T) {
 	type args struct {
-		graph *Undirected
+		graph *Unweighted
 	}
 	var tests []struct {
 		name string
 		args args
-		want *WeighedUndirected
+		want *Weighed
 	}
 	for _, tt := range tests {
 		t.Run(tt.name, func(t *testing.T) {

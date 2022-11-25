@@ -1,7 +1,7 @@
 package graph
 
 // DFS Поиск в глубину для невзвешенного графа
-func (g *Undirected) DFS(start string, compare func(want string) bool) (bool, string) {
+func (g *Unweighted) DFS(start string, compare func(want string) bool) (bool, string) {
 	var searchStack []string
 	searchStack = append(searchStack, g.Graph[start]...)
 	var searched []string
@@ -27,7 +27,7 @@ func (g *Undirected) DFS(start string, compare func(want string) bool) (bool, st
 }
 
 // BFS Поиск в ширину для невзвешенного графа
-func (g *Undirected) BFS(start string, compare func(want string) bool) (bool, string) {
+func (g *Unweighted) BFS(start string, compare func(want string) bool) (bool, string) {
 	var searchQueue []string
 	searchQueue = append(searchQueue, g.Graph[start]...)
 	var searched []string

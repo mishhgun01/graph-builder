@@ -1,28 +1,39 @@
 package graph
 
-// Undirected Ненаправленный невзвешенный граф
-type Undirected struct {
-	Graph map[string][]string
+type GData struct {
+	//  0 - не посчитано
+	//  1 - да
+	// -1 - нет
+	Directed    byte
+	Eulerian    byte
+	Hamiltonian byte
 }
 
-// WeighedUndirected Ненаправленный взвешенный граф
-type WeighedUndirected struct {
-	Graph map[string]map[string]int
+// Unweighted Невзвешенный граф
+type Unweighted struct {
+	Graph      map[string][]string
+	Properties *GData
+}
+
+// Weighed Взвешенный граф
+type Weighed struct {
+	Graph      map[string]map[string]int
+	Properties *GData
 }
 
 // NewUGraph Создает ненаправленный невзвешенный граф из ненаправленного взвешанного
-func NewUGraph(graph *WeighedUndirected) *Undirected {
+func NewUGraph(graph *Weighed) *Unweighted {
 	var output = make(map[string][]string)
 	for k, v := range graph.Graph {
 		for val := range v {
 			output[k] = append(output[k], val)
 		}
 	}
-	return &Undirected{Graph: output}
+	return &Unweighted{Graph: output}
 }
 
 // NewWGraph Создает ненаправленный взвешенный граф из ненаправленного невзвешенного. Веса равны единице.
-func NewWGraph(graph *Undirected) *WeighedUndirected {
+func NewWGraph(graph *Unweighted) *Weighed {
 	var output = make(map[string]map[string]int)
 	for k, v := range graph.Graph {
 		temp := make(map[string]int)
@@ -31,5 +42,5 @@ func NewWGraph(graph *Undirected) *WeighedUndirected {
 		}
 		output[k] = temp
 	}
-	return &WeighedUndirected{Graph: output}
+	return &Weighed{Graph: output}
 }
