@@ -1,53 +1,43 @@
 package graph
 
 // DFS Поиск в глубину для невзвешенного графа
-func (g *Undirected) DFS(start string, compare func(want string) bool) (bool, string) {
-	var searchStack []string
+func (g *Unweighted) DFS(start Node, compare func(want string) bool) (bool, *Node) {
+	var searchStack []Node
 	searchStack = append(searchStack, g.Graph[start]...)
-	var searched []string
-
 	for len(searchStack) != 0 {
 		var vertex = searchStack[len(searchStack)-1]
 		searchStack = searchStack[:len(searchStack)-1]
-		vertexSearched := false
-		for _, v := range searched {
-			if v == vertex {
-				vertexSearched = true
+		if vertex.Mark != 1 {
+			if compare(vertex.Name) {
+				g.Clean()
+				return true, &vertex
 			}
-			if !vertexSearched {
-				if compare(vertex) {
-					return true, vertex
-				}
-				searchStack = append(searchStack, g.Graph[vertex]...)
-				searched = append(searched, vertex)
-			}
+			vertex.Mark = 1
+			searchStack = append(searchStack, g.Graph[vertex]...)
 		}
+
 	}
-	return false, ""
+	g.Clean()
+	return false, nil
 }
 
 // BFS Поиск в ширину для невзвешенного графа
-func (g *Undirected) BFS(start string, compare func(want string) bool) (bool, string) {
-	var searchQueue []string
+func (g *Unweighted) BFS(start Node, compare func(want string) bool) (bool, *Node) {
+	var searchQueue []Node
 	searchQueue = append(searchQueue, g.Graph[start]...)
-	var searched []string
-
 	for len(searchQueue) != 0 {
 		var vertex = searchQueue[0]
 		searchQueue = searchQueue[1:]
-		vertexSearched := false
-		for _, v := range searched {
-			if v == vertex {
-				vertexSearched = true
+		if vertex.Mark != 1 {
+			if compare(vertex.Name) {
+				g.Clean()
+				return true, &vertex
 			}
-			if !vertexSearched {
-				if compare(vertex) {
-					return true, vertex
-				}
-				searchQueue = append(searchQueue, g.Graph[vertex]...)
-				searched = append(searched, vertex)
-			}
+			vertex.Mark = 1
+			searchQueue = append(searchQueue, g.Graph[vertex]...)
 		}
+
 	}
-	return false, ""
+	g.Clean()
+	return false, nil
 }
