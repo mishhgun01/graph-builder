@@ -11,14 +11,21 @@ type GData struct {
 
 // Unweighted Невзвешенный граф
 type Unweighted struct {
-	Graph      map[string][]string
+	Graph      map[Node][]Node
+	Vertices   []*Node
 	Properties *GData
 }
 
 // Weighted Взвешенный граф
 type Weighted struct {
-	Graph      map[string]map[string]int
+	Graph      map[Node]map[Node]int
+	Vertices   []*Node
 	Properties *GData
+}
+
+type Node struct {
+	Name string
+	Mark byte
 }
 
 type Abstract interface {
@@ -26,4 +33,10 @@ type Abstract interface {
 
 type AdjacencyMatrix struct {
 	matrix [][]int
+}
+
+func (g *Unweighted) Clean() {
+	for _, v := range g.Vertices {
+		v.Mark = 0
+	}
 }
