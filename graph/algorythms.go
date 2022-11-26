@@ -9,6 +9,7 @@ func (g *Unweighted) DFS(start Node, compare func(want string) bool) (bool, *Nod
 		searchStack = searchStack[:len(searchStack)-1]
 		if vertex.Mark != 1 {
 			if compare(vertex.Name) {
+				g.Clean()
 				return true, &vertex
 			}
 			vertex.Mark = 1
@@ -16,6 +17,7 @@ func (g *Unweighted) DFS(start Node, compare func(want string) bool) (bool, *Nod
 		}
 
 	}
+	g.Clean()
 	return false, nil
 }
 
@@ -28,6 +30,7 @@ func (g *Unweighted) BFS(start Node, compare func(want string) bool) (bool, *Nod
 		searchQueue = searchQueue[1:]
 		if vertex.Mark != 1 {
 			if compare(vertex.Name) {
+				g.Clean()
 				return true, &vertex
 			}
 			vertex.Mark = 1
@@ -35,5 +38,6 @@ func (g *Unweighted) BFS(start Node, compare func(want string) bool) (bool, *Nod
 		}
 
 	}
+	g.Clean()
 	return false, nil
 }
