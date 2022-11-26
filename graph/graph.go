@@ -7,6 +7,7 @@ type GData struct {
 	Directed    byte
 	Eulerian    byte
 	Hamiltonian byte
+	Bipartite   byte
 }
 
 // Unweighted Невзвешенный граф

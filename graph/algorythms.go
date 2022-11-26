@@ -30,6 +30,7 @@ func (g *Unweighted) BFS(start Node, compare func(want string) bool) (bool, *Nod
 			if compare(vertex.Name) {
 				return true, &vertex
 			}
+			vertex.Mark = 1
 			searchQueue = append(searchQueue, g.Graph[vertex]...)
 		}
 
