@@ -2,7 +2,7 @@ package graph
 
 //func TestAutoFromAdjMatrix(t *testing.T) {
 //	type args struct {
-//		graph *Weighted
+//		graph *Abstract
 //	}
 //	var tests []struct {
 //		name string

@@ -10,17 +10,9 @@ type GData struct {
 	Bipartite   byte
 }
 
-// Unweighted Невзвешенный граф
-type Unweighted struct {
-	Graph      map[Node][]Node
-	Vertices   []*Node
-	Properties *GData
-}
-
-// Weighted Взвешенный граф
-type Weighted struct {
-	Graph      map[Node]map[Node]int
-	Vertices   []*Node
+// Abstract Взвешенный граф
+type Abstract struct {
+	Graph      map[*Node]map[*Node]int
 	Properties *GData
 }
 
@@ -29,15 +21,6 @@ type Node struct {
 	Mark byte
 }
 
-type Abstract interface {
-}
-
 type AdjacencyMatrix struct {
 	matrix [][]int
-}
-
-func (g *Unweighted) Clean() {
-	for _, v := range g.Vertices {
-		v.Mark = 0
-	}
 }
