@@ -24,7 +24,7 @@ func New(weighted byte, graph map[string]map[string]int) *AbstractGraph {
 	vertices := make([]*Node, len(graph))
 	i := 0
 	for vert := range graph {
-		n := &Node{Name: vert, Mark: 0}
+		n := &Node{Name: vert, Mark: 0, Power: len(graph[vert])}
 		vertices[i] = n
 		i++
 	}

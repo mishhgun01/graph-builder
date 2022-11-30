@@ -1,6 +1,10 @@
 package graph
 
-//DFS Поиск в глубину для невзвешенного графа
+import (
+	"sort"
+)
+
+// DFS Поиск в глубину для невзвешенного графа
 func (g *AbstractGraph) DFS(start string, compare func(want interface{}) bool) (bool, *Node) {
 	var searchStack []*Node
 	for vert := range g.Graph {
@@ -21,6 +25,7 @@ func (g *AbstractGraph) DFS(start string, compare func(want interface{}) bool) (
 			searchStack = append(searchStack, g.GetAdjacentVertices(vertex)...)
 		}
 	}
+	g.Clean()
 	return false, nil
 }
 
@@ -38,6 +43,7 @@ func (g *AbstractGraph) BFS(start string, compare func(want interface{}) bool) (
 		searchQueue = searchQueue[1:]
 		if vertex.Mark != 1 {
 			if compare(vertex.Name) {
+				g.Clean()
 				return true, vertex
 			}
 			vertex.Mark = 1
@@ -45,5 +51,42 @@ func (g *AbstractGraph) BFS(start string, compare func(want interface{}) bool) (
 		}
 
 	}
+	g.Clean()
 	return false, nil
+}
+
+// Painting Раскраска графа
+func (g *AbstractGraph) Painting() map[interface{}][]int {
+	colors := randomColorsInRGB(len(g.Graph))
+	i := 0
+	var vList = make([]*Node, len(g.Graph))
+	for vert := range g.Graph {
+		vList[i] = vert
+		i++
+	}
+	// сортируем список вершин по убыванию степени
+	sort.Slice(vList, func(i, j int) bool {
+		return vList[i].Power > vList[j].Power
+	})
+	i = 0
+	var output = make(map[interface{}][]int, len(g.Graph))
+	// проходим по списку вершин
+	for _, vert := range vList {
+		if vert.Mark == 1 {
+			continue
+		}
+		output[vert.Name] = colors[i]
+		vert.Mark = 1
+		subVerts := g.Graph[vert]
+		// и еще раз, чтобы покрасить все несмежные
+		for _, vertex := range vList {
+			if !checkIfIn(subVerts, vertex) && vertex.Mark != 1 {
+				output[vertex.Name] = colors[i]
+				vertex.Mark = 1
+			}
+		}
+		i++
+	}
+	g.Clean()
+	return output
 }

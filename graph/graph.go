@@ -12,8 +12,9 @@ type GData struct {
 }
 
 type Node struct {
-	Name interface{}
-	Mark byte
+	Name  interface{}
+	Mark  byte
+	Power int
 }
 
 // AbstractGraph Абстрактное представление графа. Информация хранится в GData, граф задан списком смежности в виде отображения (map) вершин. Вершины заданы структурами Node.
