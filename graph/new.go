@@ -1,7 +1,7 @@
 package graph
 
 //func AutoFromAdjMatrix(matrix AdjacencyMatrix) Abstract {
-//	var res Weighted
+//	var res Abstract
 //	var weighted bool
 //	for i := 0; i < len(matrix.matrix[0]); i++ {
 //		for j := i + 1; j < len(matrix.matrix[0]); j++ {

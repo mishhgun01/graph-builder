@@ -11,9 +11,8 @@ type GData struct {
 	Weighted    byte
 }
 
-// Node - вершина графа.
 type Node struct {
-	Name string
+	Name interface{}
 	Mark byte
 }
 
@@ -37,12 +36,29 @@ func (g *AbstractGraph) Clean() {
 
 func New(weighted byte, graph map[string]map[string]int) *AbstractGraph {
 	output := make(map[*Node]map[*Node]int, len(graph))
+	vertices := make([]*Node, len(graph))
+	i := 0
+	for vert := range graph {
+		n := &Node{Name: vert, Mark: 0}
+		vertices[i] = n
+		i++
+	}
 	for vert, list := range graph {
-		parentNode := &Node{Name: vert, Mark: 0}
+		var parentNode *Node
 		childList := make(map[*Node]int, len(list))
+		for _, v := range vertices {
+			if v.Name == vert {
+				parentNode = v
+				output[v] = childList
+				break
+			}
+		}
 		for vertex, weight := range list {
-			n := &Node{Name: vertex, Mark: 0}
-			childList[n] = weight
+			for _, n := range vertices {
+				if n.Name == vertex {
+					childList[n] = weight
+				}
+			}
 		}
 		output[parentNode] = childList
 	}
