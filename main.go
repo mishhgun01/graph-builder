@@ -15,5 +15,8 @@ func main() {
 	graph1["E"] = map[string]int{"C": 1}
 	graph1["F"] = map[string]int{"B": 1, "D": 1}
 	g := graph.New(0, graph1)
-	fmt.Println(g.Painting())
+	res := g.Cycle("A")
+	for _, vert := range res {
+		fmt.Println(vert.Name)
+	}
 }

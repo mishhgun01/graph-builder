@@ -90,3 +90,28 @@ func (g *AbstractGraph) Painting() map[interface{}][]int {
 	g.Clean()
 	return output
 }
+
+// Cycle - поиск цикла в графе на основе поиска в глубину
+func (g *AbstractGraph) Cycle(start interface{}) []*Node {
+	var searchStack, output []*Node
+	for vert := range g.Graph {
+		if vert.Name == start {
+			searchStack = append(searchStack, vert)
+			break
+		}
+	}
+	for len(searchStack) != 0 {
+		var vertex = searchStack[len(searchStack)-1]
+		searchStack = searchStack[:len(searchStack)-1]
+		if vertex.Mark != 1 {
+			vertex.Mark = 1
+			output = append(output, vertex)
+			searchStack = append(searchStack, g.GetAdjacentVertices(vertex)...)
+		}
+		if vertex.Mark == 1 && output[0].Name == vertex.Name && len(output) > 2 {
+			output = append(output, vertex)
+			return output
+		}
+	}
+	return nil
+}
