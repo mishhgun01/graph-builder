@@ -94,3 +94,30 @@ func (g *AbstractGraph[T]) Painting() map[T][]int {
 	g.Clean()
 	return output
 }
+
+// Cycle - поиск цикла в графе на основе поиска в глубину (TODO НЕ ДОДЕЛАНО, нужна помощь)
+func (g *AbstractGraph[T]) Cycle(start T) []*Node[T] {
+	var searchStack, output []*Node[T]
+	var startNode *Node[T]
+	for vert := range g.Graph {
+		if vert.Name == start {
+			searchStack = append(searchStack, vert)
+			startNode = vert
+			break
+		}
+	}
+	for len(searchStack) != 0 {
+		var vertex = searchStack[len(searchStack)-1]
+		searchStack = searchStack[:len(searchStack)-1]
+		if vertex.Mark != 1 {
+			vertex.Mark = 1
+			output = append(output, vertex)
+			searchStack = append(searchStack, g.GetAdjacentVertices(vertex)...)
+			if checkIfIn(g.Graph[vertex], startNode) && len(output) > 2 {
+				output = append(output, startNode)
+				return output
+			}
+		}
+	}
+	return nil
+}
