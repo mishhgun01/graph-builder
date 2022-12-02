@@ -8,19 +8,19 @@ type GData struct {
 	Eulerian    byte
 	Hamiltonian byte
 	Bipartite   byte
-	Weighted    byte
 }
 
-type Node struct {
-	Name  interface{}
+// T  comparable - имя ноды может быть только типом, поддерживающим операции сравнения
+type Node[T comparable] struct {
+	Name  T
 	Mark  byte
 	Power int
 }
 
 // AbstractGraph Абстрактное представление графа. Информация хранится в GData, граф задан списком смежности в виде отображения (map) вершин. Вершины заданы структурами Node.
-type AbstractGraph struct {
-	Graph      map[*Node]map[*Node]int
-	Vertices   []*Node
+type AbstractGraph[T comparable] struct {
+	Graph      map[*Node[T]]map[*Node[T]]int
+	Vertices   []*Node[T]
 	Properties *GData
 }
 
@@ -29,7 +29,7 @@ type AdjacencyMatrix struct {
 	matrix [][]int
 }
 
-func (g *AbstractGraph) Clean() {
+func (g *AbstractGraph[T]) Clean() {
 	for _, v := range g.Vertices {
 		v.Mark = 0
 	}

@@ -5,8 +5,8 @@ import (
 	"time"
 )
 
-func (g *AbstractGraph) GetAdjacentVertices(n *Node) []*Node {
-	keys := make([]*Node, len(g.Graph[n]))
+func (g *AbstractGraph[T]) GetAdjacentVertices(n *Node[T]) []*Node[T] {
+	keys := make([]*Node[T], len(g.Graph[n]))
 	i := 0
 	for k := range g.Graph[n] {
 		keys[i] = k
@@ -32,7 +32,7 @@ func randomColorsInRGB(len int) [][]int {
 }
 
 // checkIfIn - проверяет, есть ли данная вершина в списке смежных
-func checkIfIn(list map[*Node]int, node *Node) bool {
+func checkIfIn[T comparable](list map[*Node[T]]int, node *Node[T]) bool {
 	for vert := range list {
 		if node.Name == vert.Name {
 			return true

@@ -5,8 +5,8 @@ import (
 )
 
 // DFS Поиск в глубину для невзвешенного графа
-func (g *AbstractGraph) DFS(start string, compare func(want interface{}) bool) (bool, *Node) {
-	var searchStack []*Node
+func (g *AbstractGraph[T]) DFS(start T, compare func(want T) bool) (bool, *Node[T]) {
+	var searchStack []*Node[T]
 	for vert := range g.Graph {
 		if vert.Name == start {
 			searchStack = append(searchStack, vert)
@@ -30,8 +30,8 @@ func (g *AbstractGraph) DFS(start string, compare func(want interface{}) bool) (
 }
 
 // BFS Поиск в ширину
-func (g *AbstractGraph) BFS(start string, compare func(want interface{}) bool) (bool, *Node) {
-	var searchQueue []*Node
+func (g *AbstractGraph[T]) BFS(start T, compare func(want T) bool) (bool, *Node[T]) {
+	var searchQueue []*Node[T]
 	for vert := range g.Graph {
 		if vert.Name == start {
 			searchQueue = append(searchQueue, vert)
@@ -56,10 +56,10 @@ func (g *AbstractGraph) BFS(start string, compare func(want interface{}) bool) (
 }
 
 // Painting Раскраска графа
-func (g *AbstractGraph) Painting() map[interface{}][]int {
+func (g *AbstractGraph[T]) Painting() map[T][]int {
 	colors := randomColorsInRGB(len(g.Graph))
 	i := 0
-	var vList = make([]*Node, len(g.Graph))
+	var vList = make([]*Node[T], len(g.Graph))
 	for vert := range g.Graph {
 		vList[i] = vert
 		i++
@@ -69,7 +69,7 @@ func (g *AbstractGraph) Painting() map[interface{}][]int {
 		return vList[i].Power > vList[j].Power
 	})
 	i = 0
-	var output = make(map[interface{}][]int, len(g.Graph))
+	var output = make(map[T][]int, len(g.Graph))
 	// проходим по списку вершин
 	for _, vert := range vList {
 		if vert.Mark == 1 {
@@ -89,29 +89,4 @@ func (g *AbstractGraph) Painting() map[interface{}][]int {
 	}
 	g.Clean()
 	return output
-}
-
-// Cycle - поиск цикла в графе на основе поиска в глубину
-func (g *AbstractGraph) Cycle(start interface{}) []*Node {
-	var searchStack, output []*Node
-	for vert := range g.Graph {
-		if vert.Name == start {
-			searchStack = append(searchStack, vert)
-			break
-		}
-	}
-	for len(searchStack) != 0 {
-		var vertex = searchStack[len(searchStack)-1]
-		searchStack = searchStack[:len(searchStack)-1]
-		if vertex.Mark != 1 {
-			vertex.Mark = 1
-			output = append(output, vertex)
-			searchStack = append(searchStack, g.GetAdjacentVertices(vertex)...)
-		}
-		if vertex.Mark == 1 && output[0].Name == vertex.Name && len(output) > 2 {
-			output = append(output, vertex)
-			return output
-		}
-	}
-	return nil
 }
