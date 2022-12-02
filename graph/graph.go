@@ -20,7 +20,7 @@ type Node[T comparable] struct {
 // AbstractGraph Абстрактное представление графа. Информация хранится в GData, граф задан списком смежности в виде отображения (map) вершин. Вершины заданы структурами Node.
 type AbstractGraph[T comparable] struct {
 	Graph      map[*Node[T]]map[*Node[T]]int
-	Vertices   []*Node[T]
+	Vertexes   []*Node[T]
 	Properties *GData
 }
 
@@ -30,7 +30,7 @@ type AdjacencyMatrix struct {
 }
 
 func (g *AbstractGraph[T]) Clean() {
-	for _, v := range g.Vertices {
+	for _, v := range g.Vertexes {
 		v.Mark = 0
 	}
 }

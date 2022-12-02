@@ -5,7 +5,7 @@ import (
 )
 
 // DFS Поиск в глубину для невзвешенного графа
-func (g *AbstractGraph[T]) DFS(start T, compare func(want T) bool) (bool, *Node[T]) {
+func (g *AbstractGraph[T]) DFS(start T, compare func(want T) bool) (bool, []*Node[T]) {
 	var searchStack []*Node[T]
 	for vert := range g.Graph {
 		if vert.Name == start {
@@ -19,9 +19,11 @@ func (g *AbstractGraph[T]) DFS(start T, compare func(want T) bool) (bool, *Node[
 		if vertex.Mark != 1 {
 			if compare(vertex.Name) {
 				g.Clean()
-				return true, vertex
+				g.Vertexes = append(g.Vertexes, vertex)
+				return true, g.Vertexes
 			}
 			vertex.Mark = 1
+			g.Vertexes = append(g.Vertexes, vertex)
 			searchStack = append(searchStack, g.GetAdjacentVertices(vertex)...)
 		}
 	}
@@ -30,7 +32,7 @@ func (g *AbstractGraph[T]) DFS(start T, compare func(want T) bool) (bool, *Node[
 }
 
 // BFS Поиск в ширину
-func (g *AbstractGraph[T]) BFS(start T, compare func(want T) bool) (bool, *Node[T]) {
+func (g *AbstractGraph[T]) BFS(start T, compare func(want T) bool) (bool, []*Node[T]) {
 	var searchQueue []*Node[T]
 	for vert := range g.Graph {
 		if vert.Name == start {
@@ -44,9 +46,11 @@ func (g *AbstractGraph[T]) BFS(start T, compare func(want T) bool) (bool, *Node[
 		if vertex.Mark != 1 {
 			if compare(vertex.Name) {
 				g.Clean()
-				return true, vertex
+				g.Vertexes = append(g.Vertexes, vertex)
+				return true, g.Vertexes
 			}
 			vertex.Mark = 1
+			g.Vertexes = append(g.Vertexes, vertex)
 			searchQueue = append(searchQueue, g.GetAdjacentVertices(vertex)...)
 		}
 
