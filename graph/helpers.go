@@ -1,6 +1,7 @@
 package graph
 
 import (
+	"math"
 	"math/rand"
 	"time"
 )
@@ -35,6 +36,27 @@ func randomColorsInRGB(len int) [][]int {
 func checkIfIn[T comparable](list map[*Node[T]]int, node *Node[T]) bool {
 	for vert := range list {
 		if node.Name == vert.Name {
+			return true
+		}
+	}
+	return false
+}
+
+func findMinimalCostNode[T comparable](list map[*Node[T]]int, processed []*Node[T]) *Node[T] {
+	var minimal *Node[T]
+	minWeight := math.MaxInt
+	for vert, weight := range list {
+		if weight < minWeight && !contains(processed, vert) {
+			minWeight = weight
+			minimal = vert
+		}
+	}
+	return minimal
+}
+
+func contains[T comparable](list []*Node[T], el *Node[T]) bool {
+	for _, node := range list {
+		if el == node {
 			return true
 		}
 	}

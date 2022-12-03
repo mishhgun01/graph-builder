@@ -19,34 +19,34 @@ package graph
 //	return res
 //}
 
-func New[T comparable](weighted byte, graph map[T]map[T]int) *AbstractGraph[T] {
+func New[T comparable](graph map[T]map[T]int) *AbstractGraph[T] {
 	output := make(map[*Node[T]]map[*Node[T]]int, len(graph))
-	vertices := make([]*Node[T], len(graph))
+	vertexes := make([]*Node[T], len(graph))
+	g := &AbstractGraph[T]{Graph: output}
 	i := 0
 	for vert := range graph {
 		n := &Node[T]{Name: vert, Mark: 0, Power: len(graph[vert])}
-		vertices[i] = n
+		vertexes[i] = n
 		i++
 	}
 	for vert, list := range graph {
 		var parentNode *Node[T]
 		childList := make(map[*Node[T]]int, len(list))
-		for _, v := range vertices {
+		for _, v := range vertexes {
 			if v.Name == vert {
 				parentNode = v
-				output[v] = childList
+				g.Graph[v] = childList
 				break
 			}
 		}
 		for vertex, weight := range list {
-			for _, n := range vertices {
+			for _, n := range vertexes {
 				if n.Name == vertex {
 					childList[n] = weight
 				}
 			}
 		}
-		output[parentNode] = childList
+		g.Graph[parentNode] = childList
 	}
-	_type := GData{}
-	return &AbstractGraph[T]{Graph: output, Properties: &_type}
+	return g
 }

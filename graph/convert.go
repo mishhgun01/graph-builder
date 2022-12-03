@@ -10,5 +10,5 @@ func ConvWeightedToUnweighted[T comparable](graph *AbstractGraph[T]) *AbstractGr
 		}
 		output[verts] = nodes
 	}
-	return &AbstractGraph[T]{Graph: output, Properties: graph.Properties}
+	return &AbstractGraph[T]{Graph: output}
 }

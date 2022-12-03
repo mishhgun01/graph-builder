@@ -5,7 +5,7 @@ import (
 )
 
 // DFS Поиск в глубину для невзвешенного графа
-func (g *AbstractGraph[T]) DFS(start T, compare func(want T) bool) (bool, []*Node[T]) {
+func (g *AbstractGraph[T]) DFS(start T, compare func(want T) bool) ([]*Node[T], bool) {
 	var searchStack []*Node[T]
 	for vert := range g.Graph {
 		if vert.Name == start {
@@ -18,21 +18,21 @@ func (g *AbstractGraph[T]) DFS(start T, compare func(want T) bool) (bool, []*Nod
 		searchStack = searchStack[:len(searchStack)-1]
 		if vertex.Mark != 1 {
 			if compare(vertex.Name) {
-				g.Clean()
+				g.Unmark()
 				g.Vertexes = append(g.Vertexes, vertex)
-				return true, g.Vertexes
+				return g.Vertexes, true
 			}
 			vertex.Mark = 1
 			g.Vertexes = append(g.Vertexes, vertex)
 			searchStack = append(searchStack, g.GetAdjacentVertices(vertex)...)
 		}
 	}
-	g.Clean()
-	return false, nil
+	g.Unmark()
+	return nil, false
 }
 
 // BFS Поиск в ширину
-func (g *AbstractGraph[T]) BFS(start T, compare func(want T) bool) (bool, []*Node[T]) {
+func (g *AbstractGraph[T]) BFS(start T, compare func(want T) bool) ([]*Node[T], bool) {
 	var searchQueue []*Node[T]
 	for vert := range g.Graph {
 		if vert.Name == start {
@@ -45,9 +45,9 @@ func (g *AbstractGraph[T]) BFS(start T, compare func(want T) bool) (bool, []*Nod
 		searchQueue = searchQueue[1:]
 		if vertex.Mark != 1 {
 			if compare(vertex.Name) {
-				g.Clean()
+				g.Unmark()
 				g.Vertexes = append(g.Vertexes, vertex)
-				return true, g.Vertexes
+				return g.Vertexes, true
 			}
 			vertex.Mark = 1
 			g.Vertexes = append(g.Vertexes, vertex)
@@ -55,8 +55,8 @@ func (g *AbstractGraph[T]) BFS(start T, compare func(want T) bool) (bool, []*Nod
 		}
 
 	}
-	g.Clean()
-	return false, nil
+	g.Unmark()
+	return nil, false
 }
 
 // Painting Раскраска графа
@@ -91,7 +91,7 @@ func (g *AbstractGraph[T]) Painting() map[T][]int {
 		}
 		i++
 	}
-	g.Clean()
+	g.Unmark()
 	return output
 }
 
@@ -120,4 +120,38 @@ func (g *AbstractGraph[T]) Cycle(start T) []*Node[T] {
 		}
 	}
 	return nil
+}
+
+// Dijkstra Алгоритм Дейкстры поиска кратчайших путей из вершины в графе.
+func (g *AbstractGraph[T]) Dijkstra(start, end T) map[*Node[T]]int {
+	var processed []*Node[T]
+	var endNode, _temp *Node[T]
+	var nodeParents, vertCosts = make(map[*Node[T]]*Node[T], len(g.Graph)), make(map[*Node[T]]int, len(g.Graph))
+	for vert := range g.Graph {
+		if vert.Name == start {
+			for kid := range g.Graph[vert] {
+				nodeParents[kid] = vert
+				vertCosts[kid] = g.Graph[vert][kid]
+			}
+		}
+		if vert.Name == end {
+			endNode = vert
+		}
+	}
+	nodeParents[endNode] = nil
+	_temp = findMinimalCostNode(vertCosts, processed)
+	for _temp != nil {
+		cost := vertCosts[_temp]
+		neighbours := g.Graph[_temp]
+		for node := range neighbours {
+			newCost := cost + neighbours[node]
+			if vertCosts[node] > newCost {
+				vertCosts[node] = newCost
+				nodeParents[node] = node
+			}
+		}
+		processed = append(processed, _temp)
+		_temp = findMinimalCostNode(vertCosts, processed)
+	}
+	return vertCosts
 }

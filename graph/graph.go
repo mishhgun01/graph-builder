@@ -1,15 +1,5 @@
 package graph
 
-type GData struct {
-	//  0 - нет
-	//  1 - да
-	// -1 - не посчитано
-	Directed    byte
-	Eulerian    byte
-	Hamiltonian byte
-	Bipartite   byte
-}
-
 // T  comparable - имя ноды может быть только типом, поддерживающим операции сравнения
 type Node[T comparable] struct {
 	Name  T
@@ -19,9 +9,8 @@ type Node[T comparable] struct {
 
 // AbstractGraph Абстрактное представление графа. Информация хранится в GData, граф задан списком смежности в виде отображения (map) вершин. Вершины заданы структурами Node.
 type AbstractGraph[T comparable] struct {
-	Graph      map[*Node[T]]map[*Node[T]]int
-	Vertexes   []*Node[T]
-	Properties *GData
+	Graph    map[*Node[T]]map[*Node[T]]int
+	Vertexes []*Node[T]
 }
 
 // AdjacencyMatrix матрица смежности.
@@ -29,7 +18,7 @@ type AdjacencyMatrix struct {
 	matrix [][]int
 }
 
-func (g *AbstractGraph[T]) Clean() {
+func (g *AbstractGraph[T]) Unmark() {
 	for _, v := range g.Vertexes {
 		v.Mark = 0
 	}
