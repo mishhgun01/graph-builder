@@ -1,35 +1,25 @@
 package graph
 
-// Undirected Ненаправленный невзвешенный граф
-type Undirected struct {
-	Graph map[string][]string
+// T  comparable - имя ноды может быть только типом, поддерживающим операции сравнения
+type Node[T comparable] struct {
+	Name  T
+	Mark  byte
+	Power int
 }
 
-// WeighedUndirected Ненаправленный взвешенный граф
-type WeighedUndirected struct {
-	Graph map[string]map[string]int
+// AbstractGraph Абстрактное представление графа. Информация хранится в GData, граф задан списком смежности в виде отображения (map) вершин. Вершины заданы структурами Node.
+type AbstractGraph[T comparable] struct {
+	Graph    map[*Node[T]]map[*Node[T]]int
+	Vertexes []*Node[T]
 }
 
-// NewUGraph Создает ненаправленный невзвешенный граф из ненаправленного взвешанного
-func NewUGraph(graph *WeighedUndirected) *Undirected {
-	var output = make(map[string][]string)
-	for k, v := range graph.Graph {
-		for val := range v {
-			output[k] = append(output[k], val)
-		}
+// AdjacencyMatrix матрица смежности.
+type AdjacencyMatrix struct {
+	matrix [][]int
+}
+
+func (g *AbstractGraph[T]) Unmark() {
+	for _, v := range g.Vertexes {
+		v.Mark = 0
 	}
-	return &Undirected{Graph: output}
-}
-
-// NewWGraph Создает ненаправленный взвешенный граф из ненаправленного невзвешенного. Веса равны единице.
-func NewWGraph(graph *Undirected) *WeighedUndirected {
-	var output = make(map[string]map[string]int)
-	for k, v := range graph.Graph {
-		temp := make(map[string]int)
-		for _, val := range v {
-			temp[val] = 1
-		}
-		output[k] = temp
-	}
-	return &WeighedUndirected{Graph: output}
 }
