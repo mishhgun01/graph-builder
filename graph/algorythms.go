@@ -123,10 +123,10 @@ func (g *AbstractGraph[T]) Cycle(start T) []*Node[T] {
 }
 
 // Dijkstra Алгоритм Дейкстры поиска кратчайших путей из вершины в графе.
-func (g *AbstractGraph[T]) Dijkstra(start, end T) map[*Node[T]]int {
+func (g *AbstractGraph[T]) Dijkstra(start, end T) map[*Node[T]]float64 {
 	var processed []*Node[T]
 	var endNode, _temp *Node[T]
-	var nodeParents, vertCosts = make(map[*Node[T]]*Node[T], len(g.Graph)), make(map[*Node[T]]int, len(g.Graph))
+	var nodeParents, vertCosts = make(map[*Node[T]]*Node[T], len(g.Graph)), make(map[*Node[T]]float64, len(g.Graph))
 	for vert := range g.Graph {
 		if vert.Name == start {
 			for kid := range g.Graph[vert] {

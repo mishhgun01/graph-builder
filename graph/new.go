@@ -19,8 +19,8 @@ package graph
 //	return res
 //}
 
-func New[T comparable](graph map[T]map[T]int) *AbstractGraph[T] {
-	output := make(map[*Node[T]]map[*Node[T]]int, len(graph))
+func New[T comparable](graph map[T]map[T]float64) *AbstractGraph[T] {
+	output := make(map[*Node[T]]map[*Node[T]]float64, len(graph))
 	vertexes := make([]*Node[T], len(graph))
 	g := &AbstractGraph[T]{Graph: output}
 	i := 0
@@ -31,7 +31,7 @@ func New[T comparable](graph map[T]map[T]int) *AbstractGraph[T] {
 	}
 	for vert, list := range graph {
 		var parentNode *Node[T]
-		childList := make(map[*Node[T]]int, len(list))
+		childList := make(map[*Node[T]]float64, len(list))
 		for _, v := range vertexes {
 			if v.Name == vert {
 				parentNode = v

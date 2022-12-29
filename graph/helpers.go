@@ -33,7 +33,7 @@ func randomColorsInRGB(len int) [][]int {
 }
 
 // checkIfIn - проверяет, есть ли данная вершина в списке смежных
-func checkIfIn[T comparable](list map[*Node[T]]int, node *Node[T]) bool {
+func checkIfIn[T comparable](list map[*Node[T]]float64, node *Node[T]) bool {
 	for vert := range list {
 		if node.Name == vert.Name {
 			return true
@@ -42,9 +42,9 @@ func checkIfIn[T comparable](list map[*Node[T]]int, node *Node[T]) bool {
 	return false
 }
 
-func findMinimalCostNode[T comparable](list map[*Node[T]]int, processed []*Node[T]) *Node[T] {
+func findMinimalCostNode[T comparable](list map[*Node[T]]float64, processed []*Node[T]) *Node[T] {
 	var minimal *Node[T]
-	minWeight := math.MaxInt
+	minWeight := math.MaxFloat64
 	for vert, weight := range list {
 		if weight < minWeight && !contains(processed, vert) {
 			minWeight = weight

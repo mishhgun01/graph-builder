@@ -9,7 +9,7 @@ type Node[T comparable] struct {
 
 // AbstractGraph Абстрактное представление графа. Информация хранится в GData, граф задан списком смежности в виде отображения (map) вершин. Вершины заданы структурами Node.
 type AbstractGraph[T comparable] struct {
-	Graph    map[*Node[T]]map[*Node[T]]int
+	Graph    map[*Node[T]]map[*Node[T]]float64
 	Vertexes []*Node[T]
 }
 
