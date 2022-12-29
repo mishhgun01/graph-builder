@@ -1,21 +1,23 @@
 package graph
 
+import "constraints"
+
 // T  comparable - имя ноды может быть только типом, поддерживающим операции сравнения
-type Node[T comparable] struct {
+type Node[T constraints.Ordered] struct {
 	Name  T
 	Mark  byte
 	Power int
 }
 
 // AbstractGraph Абстрактное представление графа. Информация хранится в GData, граф задан списком смежности в виде отображения (map) вершин. Вершины заданы структурами Node.
-type AbstractGraph[T comparable] struct {
+type AbstractGraph[T constraints.Ordered] struct {
 	Graph    map[*Node[T]]map[*Node[T]]float64
 	Vertexes []*Node[T]
 }
 
 // AdjacencyMatrix матрица смежности.
 type AdjacencyMatrix struct {
-	matrix [][]int
+	Matrix [][]float64
 }
 
 func (g *AbstractGraph[T]) Unmark() {

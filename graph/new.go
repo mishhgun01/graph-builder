@@ -1,5 +1,10 @@
 package graph
 
+import (
+	"constraints"
+	"sort"
+)
+
 //func AutoFromAdjMatrix(matrix AdjacencyMatrix) Abstract {
 //	var res Abstract
 //	var weighted bool
@@ -19,7 +24,7 @@ package graph
 //	return res
 //}
 
-func New[T comparable](graph map[T]map[T]float64) *AbstractGraph[T] {
+func New[T constraints.Ordered](graph map[T]map[T]float64) *AbstractGraph[T] {
 	output := make(map[*Node[T]]map[*Node[T]]float64, len(graph))
 	vertexes := make([]*Node[T], len(graph))
 	g := &AbstractGraph[T]{Graph: output}
@@ -49,4 +54,34 @@ func New[T comparable](graph map[T]map[T]float64) *AbstractGraph[T] {
 		g.Graph[parentNode] = childList
 	}
 	return g
+}
+
+func NewAdjMatrix[T constraints.Ordered](graph map[T]map[T]float64) *AdjacencyMatrix {
+	var output = make([][]float64, len(graph))
+	for i := range output {
+		output[i] = make([]float64, len(graph))
+	}
+	listOfVerts := make([]T, len(graph))
+	i := 0
+	for vert := range graph {
+		listOfVerts[i] = vert
+		i++
+	}
+	sort.Slice(listOfVerts, func(i, j int) bool {
+		return listOfVerts[i] < listOfVerts[j]
+	})
+	i = 0
+	for _, vert := range listOfVerts {
+		list := graph[vert]
+		for subvert, weight := range list {
+			for j, name := range listOfVerts {
+				if name == subvert {
+					output[i][j] = weight
+					break
+				}
+			}
+		}
+		i++
+	}
+	return &AdjacencyMatrix{output}
 }

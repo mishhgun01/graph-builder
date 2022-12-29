@@ -1,10 +1,12 @@
 package graph
 
+import "constraints"
+
 // ConvWeightedToUnweighted Создает невзвешенный граф из взвешенного
-func ConvWeightedToUnweighted[T comparable](graph *AbstractGraph[T]) *AbstractGraph[T] {
-	var output = make(map[*Node[T]]map[*Node[T]]int)
+func ConvWeightedToUnweighted[T constraints.Ordered](graph *AbstractGraph[T]) *AbstractGraph[T] {
+	var output = make(map[*Node[T]]map[*Node[T]]float64)
 	for verts, list := range graph.Graph {
-		var nodes = make(map[*Node[T]]int, len(list))
+		var nodes = make(map[*Node[T]]float64, len(list))
 		for vert := range list {
 			nodes[vert] = 1
 		}
