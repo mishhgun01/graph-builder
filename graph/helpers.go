@@ -1,7 +1,6 @@
 package graph
 
 import (
-	"constraints"
 	"math"
 	"math/rand"
 	"time"
@@ -34,7 +33,7 @@ func randomColorsInRGB(len int) [][]int {
 }
 
 // checkIfIn - проверяет, есть ли данная вершина в списке смежных
-func checkIfIn[T constraints.Ordered](list map[*Node[T]]float64, node *Node[T]) bool {
+func checkIfIn[T comparable](list map[*Node[T]]float64, node *Node[T]) bool {
 	for vert := range list {
 		if node.Name == vert.Name {
 			return true
@@ -43,7 +42,7 @@ func checkIfIn[T constraints.Ordered](list map[*Node[T]]float64, node *Node[T]) 
 	return false
 }
 
-func findMinimalCostNode[T constraints.Ordered](list map[*Node[T]]float64, processed []*Node[T]) *Node[T] {
+func findMinimalCostNode[T comparable](list map[*Node[T]]float64, processed []*Node[T]) *Node[T] {
 	var minimal *Node[T]
 	minWeight := math.MaxFloat64
 	for vert, weight := range list {
@@ -55,7 +54,7 @@ func findMinimalCostNode[T constraints.Ordered](list map[*Node[T]]float64, proce
 	return minimal
 }
 
-func contains[T constraints.Ordered](list []*Node[T], el *Node[T]) bool {
+func contains[T comparable](list []*Node[T], el *Node[T]) bool {
 	for _, node := range list {
 		if el == node {
 			return true

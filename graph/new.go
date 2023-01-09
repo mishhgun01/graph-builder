@@ -5,26 +5,8 @@ import (
 	"sort"
 )
 
-//func AutoFromAdjMatrix(matrix AdjacencyMatrix) Abstract {
-//	var res Abstract
-//	var weighted bool
-//	for i := 0; i < len(matrix.matrix[0]); i++ {
-//		for j := i + 1; j < len(matrix.matrix[0]); j++ {
-//			if matrix.matrix[i][j] != 0 {
-//				if matrix.matrix[i][j] != 1 {
-//					weighted = true
-//				}
-//				res.Graph[strconv.Itoa(i)][strconv.Itoa(j)] = matrix.matrix[i][j]
-//			}
-//		}
-//	}
-//	if !weighted {
-//		return ConvWeightedToUnweighted(&res)
-//	}
-//	return res
-//}
-
-func New[T constraints.Ordered](graph map[T]map[T]float64) *AbstractGraph[T] {
+// Инициализация из списка смежности.
+func New[T comparable](graph map[T]map[T]float64) *AbstractGraph[T] {
 	output := make(map[*Node[T]]map[*Node[T]]float64, len(graph))
 	vertexes := make([]*Node[T], len(graph))
 	g := &AbstractGraph[T]{Graph: output}
@@ -56,7 +38,8 @@ func New[T constraints.Ordered](graph map[T]map[T]float64) *AbstractGraph[T] {
 	return g
 }
 
-func NewAdjMatrix[T constraints.Ordered](graph map[T]map[T]float64) *AdjacencyMatrix {
+// Создание матрицы смежности из списка смежности.
+func NewAdjMatrix[T constraints.Ordered](graph map[T]map[T]float64) *AdjacencyMatrix[T] {
 	var output = make([][]float64, len(graph))
 	for i := range output {
 		output[i] = make([]float64, len(graph))
@@ -83,5 +66,26 @@ func NewAdjMatrix[T constraints.Ordered](graph map[T]map[T]float64) *AdjacencyMa
 		}
 		i++
 	}
-	return &AdjacencyMatrix{output}
+	return &AdjacencyMatrix[T]{output, listOfVerts}
+}
+
+// Создание списка смежности из матрицы смежности
+func OutputFromAdjMatrix[T constraints.Ordered](matrix *AdjacencyMatrix[T]) map[T]map[T]float64 {
+	output := make(map[T]map[T]float64, len(matrix.Verts))
+	temp := make(map[int]T, len(matrix.Verts))
+	for i := 0; i < len(matrix.Verts); i++ {
+		temp[i] = matrix.Verts[i]
+	}
+	i := 0
+	for _, name := range matrix.Verts {
+		listOfVerts := map[T]float64{}
+		for j, weight := range matrix.Matrix[i] {
+			if int(weight) != 0 {
+				listOfVerts[matrix.Verts[j]] = weight
+			}
+		}
+		output[name] = listOfVerts
+		i++
+	}
+	return output
 }

@@ -17,4 +17,8 @@ func main() {
 	for _, w := range g.Matrix {
 		fmt.Println(w)
 	}
+	o := graph.OutputFromAdjMatrix(g)
+	for name, list := range o {
+		fmt.Println(name, "-", list)
+	}
 }
